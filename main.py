@@ -2,10 +2,8 @@ import pygame
 import math
 from queue import PriorityQueue
 
-WIDTH = 800 
-INSTRUCTION_PANEL_WIDTH = 200      
-TOTAL_WIDTH = WIDTH + INSTRUCTION_PANEL_WIDTH
-WIN = pygame.display.set_mode((TOTAL_WIDTH, WIDTH))           # setting up the display
+WIDTH = 800   
+WIN = pygame.display.set_mode((WIDTH, WIDTH))           # setting up the display
 pygame.display.set_caption("A* Pathfinding Algorithm") # display caption
 
 RED = (255, 0, 0)               # already looked at node
@@ -88,50 +86,6 @@ class Node:
 
     def __lt__(self, other): 
         return False
-
-def wrap_text(text, font, max_width):
-    """
-    Splits the text into lines, ensuring each line does not exceed max_width.
-    """
-    words = text.split()
-    lines = []
-    current_line = []
-    for word in words:
-        # Check width with one additional word
-        test_line = current_line + [word]
-        test_width = font.size(' '.join(test_line))[0]
-        if test_width <= max_width:
-            current_line = test_line
-        else:
-            lines.append(' '.join(current_line))
-            current_line = [word]
-    lines.append(' '.join(current_line))  # Add the last line
-    return lines
-
-def panel_instructions(win):
-    font = pygame.font.SysFont('Arial', 20)
-    instructions = [
-        "Instructions:", 
-        "Left Click to place start point/end point/barriers.", 
-        "Right Click to clear cells.", 
-        "SPACE to start the A* shortest path finding algorithm.", 
-        "C to clear the entire screen."
-    ]
-    start_y = 20  # Starting Y position of the first line
-    max_width = INSTRUCTION_PANEL_WIDTH - 20  # Max width for text
-    bullet = "• "  # Define bullet point character
-    spacing = 10  # Extra spacing between instructions for better readability
-
-    for instruction in instructions:
-        # Prepend bullet points to items, but not to the title
-        if instruction != "Instructions:":
-            instruction = bullet + instruction
-        wrapped_lines = wrap_text(instruction, font, max_width)
-        for line in wrapped_lines:
-            text_surface = font.render(line, True, BLACK)
-            win.blit(text_surface, (WIDTH + 10, start_y))
-            start_y += font.get_height() + spacing  # Adjust for line height and extra spacing
-
 
 
 def h(p1, p2): 
@@ -220,7 +174,6 @@ def draw(win, grid, rows, width):
             node.draw(win) 
     
     draw_grid(win, rows, width) # then we draw the grid lines on top of the colors
-    panel_instructions(win)      # draw the instructions
     pygame.display.update()     # updates the display with what we've drawn 
 
 
@@ -290,5 +243,4 @@ def main(win, width):
 
     pygame.quit()
 
-pygame.font.init()
 main(WIN, WIDTH)
